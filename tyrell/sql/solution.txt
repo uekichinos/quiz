@@ -1,11 +1,11 @@
-Run below query for indexing
+1. Run below query for indexing
 
 	ALTER TABLE `affiliates` ADD INDEX `affiliates_idx_type` (`type`);
 	ALTER TABLE `jobs` ADD INDEX `jobs_idx_publish_status_id` (`publish_status`,`id`);
 
-Avoid using leading wildcard if using LIKE search so database will use index
+2. Avoid using leading wildcard if using LIKE search so database will use index
 
-SELECT
+    SELECT
         Jobs.id AS `Jobs__id`,
         Jobs.name AS `Jobs__name`,
         Jobs.media_id AS `Jobs__media_id`,
