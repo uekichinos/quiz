@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="text-left m-8">
+        <input class="border border-gray-400 rounded-lg p-3" type="number" id="people" placeholder="number of people" min="1">
+        <button class="border border-green-400 rounded-lg p-3 bg-green-300 hover:bg-green-600 hover:text-white" id="shuffle">Shuffle</button>
+        <div class="align-left mt-8 invisible" id="notify"></div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script>
+$('#shuffle').on( "click", function() {
+    var data = {"total":$('#people').val()};
+    var notify = $('#notify');
+
+    /* reset notify ele */
+    notify.removeClass('visible').addClass('invisible').html('');
+
+    $.ajax({
+        type: 'POST',
+        url: 'process.php',
+        data: data,
+        dataType: 'json',
+        success: function(data) { 
+
+            /* display notify ele */
+            notify.removeClass('invisible').addClass('visible');
+
+            if(data.status == 'error') {
+                /* error - display message return from API with red color*/
+                notify.html(data.message).css('color', 'red');
+            }
+            else {
+                /* success - display return records */
+                for(const key in data.records) {
+                    html = data.records[key].join(', ')+'<br>';
+                    notify.append(html).css('color', 'green');
+                }
+            }
+        }
+    });
+});
+
+</script>
+</html>
